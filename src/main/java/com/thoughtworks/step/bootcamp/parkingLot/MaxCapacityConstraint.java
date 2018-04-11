@@ -2,10 +2,10 @@ package com.thoughtworks.step.bootcamp.parkingLot;
 
 import java.util.ArrayList;
 
-public class LotFilterByMaxVacancy implements Filterable {
+class MaxCapacityConstraint implements LotSelector {
     @Override
     public ParkingLot getAvailableLot(ArrayList<ParkingLot> parkingLots) {
-        parkingLots.sort(ParkingLot:: compareAvailability);
+        parkingLots.sort(ParkingLot::compareCapacity);
         return parkingLots.get(0);
     }
 }

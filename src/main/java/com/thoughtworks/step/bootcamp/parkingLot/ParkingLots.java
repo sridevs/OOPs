@@ -3,12 +3,12 @@ package com.thoughtworks.step.bootcamp.parkingLot;
 import java.util.ArrayList;
 
 class ParkingLots {
-    private final Filterable availableLotFilter;
+    private final LotSelector lotSelector;
     private ArrayList<ParkingLot> parkingLots;
 
-    ParkingLots(Filterable lotFilter) {
+    ParkingLots(LotSelector lotFilter) {
         this.parkingLots = new ArrayList<>();
-        this.availableLotFilter = lotFilter;
+        this.lotSelector = lotFilter;
     }
 
     public ParkingLot firstLot(){
@@ -25,6 +25,6 @@ class ParkingLots {
 
     public ParkingLot availableLot() throws CantParkException {
         if (parkingLots.isEmpty()) throw new CantParkException("No available lots");
-        return availableLotFilter.getAvailableLot(parkingLots);
+        return lotSelector.getAvailableLot(parkingLots);
     }
 }

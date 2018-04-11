@@ -18,7 +18,7 @@ public class AttendantTest {
     @Test
     public void shouldBeAbleToParkACarGivenAParkingLot() throws CantParkException {
 
-        Filterable lotFilter = new LotFilter();
+        LotSelector lotFilter = new FirstAvailableLotConstraint();
         final Attendant attendant = new Attendant(lotFilter);
         attendant.addLot(parkingLot);
         int car = 1;
@@ -28,7 +28,7 @@ public class AttendantTest {
 
     @Test (expected = CantParkException.class)
     public void shouldNotParkACarGivenAllLotsAreFull() throws CantParkException {
-        Filterable lotFilter = new LotFilter();
+        LotSelector lotFilter = new FirstAvailableLotConstraint();
         final Attendant attendant = new Attendant(lotFilter);
         attendant.addLot(parkingLot);
         attendant.addLot(new ParkingLot(1));
@@ -42,7 +42,7 @@ public class AttendantTest {
 
     @Test
     public void shouldParkACarGivenSpaceInLastLot() throws CantParkException {
-        Filterable lotFilter = new LotFilter();
+        LotSelector lotFilter = new FirstAvailableLotConstraint();
         final Attendant attendant = new Attendant(lotFilter);
         attendant.addLot(parkingLot);
         attendant.addLot(new ParkingLot(1));
@@ -55,8 +55,8 @@ public class AttendantTest {
 
     @Test
     public void shouldParkCarInFirstAvailableLot() throws CantParkException {
-        Filterable lotFilter = new LotFilter();
-        final Attendant attendant = new Attendant(lotFilter);
+        LotSelector firstAvailableLotConstraint = new FirstAvailableLotConstraint();
+        final Attendant attendant = new Attendant(firstAvailableLotConstraint);
         ParkingLot parkingLot2 = new ParkingLot(2);
         ParkingLot parkingLot3 = new ParkingLot(3);
         attendant.addLot(parkingLot);
@@ -75,15 +75,15 @@ public class AttendantTest {
 
     @Test (expected = CantParkException.class)
     public void shouldThrowExceptionIfNoAvailableLots() throws CantParkException {
-        Filterable lotFilter = new LotFilter();
+        LotSelector lotFilter = new FirstAvailableLotConstraint();
         final Attendant attendant = new Attendant(lotFilter);
         attendant.park(1);
     }
 
     @Test
     public void shouldParkCarInLotWithMaxCapacity() throws CantParkException {
-        Filterable lotFilter = new LotFilterByMaxCapacity();
-        final Attendant attendant = new Attendant(lotFilter);
+        LotSelector maxCapacityConstraint = new MaxCapacityConstraint();
+        final Attendant attendant = new Attendant(maxCapacityConstraint);
         ParkingLot parkingLot2 = new ParkingLot(1);
         ParkingLot parkingLot3 = new ParkingLot(2);
         attendant.addLot(parkingLot);
@@ -96,9 +96,9 @@ public class AttendantTest {
 
     @Test
     public void shouldGetLotWithMaxAvailability() throws CantParkException {
-        final LotFilterByMaxVacancy lotFilterByMaxVacancy = new LotFilterByMaxVacancy();
-        final Attendant attendant = new Attendant(lotFilterByMaxVacancy);
-        ParkingLot parkingLot2 = new ParkingLot(2);
+        final MaxVacancyConstraint maxVacancyConstraint = new MaxVacancyConstraint();
+        final Attendant attendant = new Attendant(maxVacancyConstraint);
+        ParkingLot parkingLot2 = new ParkingLot(12);
         ParkingLot parkingLot3 = new ParkingLot(2);
         attendant.addLot(parkingLot);
         attendant.addLot(parkingLot2);
@@ -106,10 +106,10 @@ public class AttendantTest {
         int car1 = 1;
         int car2 = 2;
         int car3 = 3;
-        attendant.park(car1);
+        final int token2 = attendant.park(car1);
         attendant.park(car2);
         int token = attendant.park(car3);
-        assertTrue(parkingLot3.hasCarOfToken(token));
+        assertTrue(parkingLot2.hasCarOfToken(token2));
     }
 
 //    @Ignore

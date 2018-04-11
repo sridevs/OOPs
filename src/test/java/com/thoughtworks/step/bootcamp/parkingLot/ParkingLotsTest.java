@@ -11,7 +11,7 @@ public class ParkingLotsTest {
     private ParkingLot parkingLot;
     @Before
     public void setUp() {
-        parkingLots = new ParkingLots(new LotFilter());
+        parkingLots = new ParkingLots(new FirstAvailableLotConstraint());
         parkingLot = mock(ParkingLot.class);
         parkingLots.add(parkingLot);
     }
