@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-Å
+
 public class MaxCapacityConstraintTest {
     private LotSelector maxCapacityConstraint;
     private ArrayList<ParkingLot> parkingLots;
